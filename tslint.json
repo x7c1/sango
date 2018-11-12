@@ -1,0 +1,30 @@
+{
+  "rulesDirectory": [],
+  "extends": [
+    "tslint-config-standard"
+  ],
+  "rules": {
+    // https://palantir.github.io/tslint/rules/trailing-comma/
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    // https://palantir.github.io/tslint/rules/quotemark/
+    "quotemark": [
+      true,
+      "double",
+      "avoid-escape",
+      "avoid-template"
+    ],
+    // https://palantir.github.io/tslint/rules/no-empty/
+    "no-empty": false,
+    // https://palantir.github.io/tslint/rules/max-line-length/
+    "max-line-length": [
+      true,
+      90
+    ]
+  }
+}

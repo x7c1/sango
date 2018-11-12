@@ -8,6 +8,10 @@
   "license": "CC-BY-NC-SA-4.0",
   "dependencies": {},
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.1.6",

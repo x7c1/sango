@@ -1,0 +1,12 @@
+{
+  "name": "moccasin",
+  "version": "0.0.1",
+  "description": "a leather shoes",
+  "scripts": {
+  },
+  "author": "x7c1",
+  "license": "CC-BY-NC-SA-4.0",
+  "dependencies": {},
+  "devDependencies": {
+  }
+}

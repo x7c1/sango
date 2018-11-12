@@ -3,6 +3,16 @@
   "version": "0.0.1",
   "description": "a leather shoes",
   "scripts": {
+    "tslint": "./scripts/projects.sh 'tslint --project'",
+    "tslint:fix": "./scripts/projects.sh 'tslint --fix --project'",
+    "tsfmt:replace": "./scripts/projects.sh 'tsfmt --replace --baseDir'",
+    "tsfmt:verify": "find ./projects -name '*.ts' | xargs tsfmt --verify",
+    "lint": "npm run tsfmt:verify && npm run tslint",
+    "format": "npm run tsfmt:replace && npm run tslint:fix",
+    "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
+    "sample:test": "./scripts/mocha-all.sh ./projects/sample-service",
+    "sample:build": "tsc --build ./projects/sample-service",
+    "sample": "NODE_PATH=./dist node ./dist/sample-service"
   },
   "author": "x7c1",
   "license": "CC-BY-NC-SA-4.0",

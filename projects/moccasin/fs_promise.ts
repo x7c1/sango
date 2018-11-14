@@ -12,3 +12,7 @@ export const readFile = (path: string): Promise<string> => {
 export const stat = (path: string): Promise<fs.Stats> => {
   return promisify(fs.stat)(path)
 }
+
+export const appendFile = (file: string, content: string): Promise<void> => {
+  return promisify(fs.appendFile)(file, content)
+}

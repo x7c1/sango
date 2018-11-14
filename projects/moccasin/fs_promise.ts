@@ -16,3 +16,7 @@ export const stat = (path: string): Promise<fs.Stats> => {
 export const appendFile = (file: string, content: string): Promise<void> => {
   return promisify(fs.appendFile)(file, content)
 }
+
+export const writeFile = (file: string, content: string): Promise<void> => {
+  return promisify(fs.writeFile)(file, content)
+}

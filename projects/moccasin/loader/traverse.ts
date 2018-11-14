@@ -6,7 +6,7 @@ const nonEmpty = <A> (value: A | null | undefined): value is A => {
   return value !== null && value !== undefined
 }
 
-const toDirectoryPath = (dir: string) => async (file: string) => {
+const toDirectoryPath = (dir: string) => async (file: string): Promise<string | null> => {
   const path = dir + "/" + file
   const stats = await stat(path)
   return stats.isDirectory() ? path : null

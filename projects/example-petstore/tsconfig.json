@@ -2,7 +2,7 @@
   "extends": "../tsconfig-base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "../../dist/sample-service",
+    "outDir": "../../dist/example-petstore",
     "paths": {
       "moccasin": [
         "../moccasin"

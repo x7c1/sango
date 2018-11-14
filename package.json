@@ -10,9 +10,9 @@
     "lint": "npm run tsfmt:verify && npm run tslint",
     "format": "npm run tsfmt:replace && npm run tslint:fix",
     "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
-    "sample:test": "./scripts/mocha-all.sh ./projects/sample-service",
-    "sample:build": "tsc --build ./projects/sample-service",
-    "sample": "NODE_PATH=./dist node ./dist/sample-service"
+    "sample:test": "./scripts/mocha-all.sh ./projects/example-petstore",
+    "sample:build": "tsc --build ./projects/example-petstore",
+    "sample": "NODE_PATH=./dist node ./dist/example-petstore"
   },
   "author": "x7c1",
   "license": "MIT",

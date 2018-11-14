@@ -1,0 +1,25 @@
+/users/{userId}:
+  get:
+    summary: Info for a specific user
+    tags:
+      - users
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: The id of the user to retrieve
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Expected response to a valid request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Users"
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"

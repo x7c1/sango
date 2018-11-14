@@ -2,7 +2,7 @@ import { readdir, stat } from "../fs_promise"
 import { FragmentsLoader, fromTexts, fromYamls } from "./loader"
 
 // rf. https://stackoverflow.com/a/46700791
-const notEmpty = <A>(value: A | null | undefined): value is A => {
+const notEmpty = <A> (value: A | null | undefined): value is A => {
   return value !== null && value !== undefined
 }
 

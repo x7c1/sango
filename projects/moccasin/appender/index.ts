@@ -7,7 +7,7 @@ const warning =
   "-- YOUR CHANGES WILL BE ERASED!\n\n"
 
 class Appender {
-  constructor (private readonly outputPath: string) {}
+  constructor (private readonly outputPath: string) { }
 
   clear (): Promise<void> {
     console.log("[Appender] clear:", this.outputPath)

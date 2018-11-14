@@ -5,7 +5,7 @@ export class FragmentContent {
   constructor (
     private readonly label: string,
     private readonly body: string,
-  ) {}
+  ) { }
 
   dump (): string {
     return `#${this.label}\n${this.body}\n`
@@ -16,7 +16,7 @@ class ContentLoader {
   constructor (
     private readonly dir: string,
     private readonly fileName: string,
-  ) {}
+  ) { }
 
   private readonly path = this.dir + "/" + this.fileName
 
@@ -28,7 +28,7 @@ class ContentLoader {
   }
 }
 
-const concat = <A>([ xs, ys ]: A[][]): A[] => xs.concat(ys)
+const concat = <A> ([xs, ys]: A[][]): A[] => xs.concat(ys)
 
 export abstract class FragmentsLoader {
 

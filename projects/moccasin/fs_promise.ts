@@ -8,3 +8,7 @@ export const readdir = (dir: string): Promise<string[]> => {
 export const readFile = (path: string): Promise<string> => {
   return promisify(fs.readFile)(path, "utf8")
 }
+
+export const stat = (path: string): Promise<fs.Stats> => {
+  return promisify(fs.stat)(path)
+}

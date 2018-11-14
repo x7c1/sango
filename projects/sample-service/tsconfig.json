@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig-base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../../dist/sample-service",
+    "paths": {
+      "moccasin": [
+        "../moccasin"
+      ],
+      "moccasin/*": [
+        "../moccasin/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../moccasin"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "moccasin",
+  "version": "0.0.1",
+  "description": "a leather shoes",
+  "scripts": {
+    "tslint": "./scripts/projects.sh 'tslint --project'",
+    "tslint:fix": "./scripts/projects.sh 'tslint --fix --project'",
+    "tsfmt:replace": "./scripts/projects.sh 'tsfmt --replace --baseDir'",
+    "tsfmt:verify": "find ./projects -name '*.ts' | xargs tsfmt --verify",
+    "lint": "npm run tsfmt:verify && npm run tslint",
+    "format": "npm run tsfmt:replace && npm run tslint:fix",
+    "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
+    "sample:test": "./scripts/mocha-all.sh ./projects/sample-service",
+    "sample:build": "tsc --build ./projects/sample-service",
+    "sample": "NODE_PATH=./dist node ./dist/sample-service"
+  },
+  "author": "x7c1",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.7.0",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.1.6",
+    "typescript-formatter": "^7.2.2"
+  }
+}

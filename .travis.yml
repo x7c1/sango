@@ -1,0 +1,16 @@
+language: java
+jdk:
+  - oraclejdk8
+env:
+  - NODE_VERSION="8.12.0"
+cache:
+  directories:
+    - "node_modules"
+before_install:
+  - nvm install $NODE_VERSION
+install:
+  - npm install
+script:
+  - npm run lint
+  - npm run sample:build
+  - npm run test

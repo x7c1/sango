@@ -7,8 +7,8 @@ interface Generator {
 }
 
 interface GeneratorParams {
-  outputPath: string
   traverser: Traverser
+  outputPath: string
 }
 
 export const createGenerator =
@@ -20,27 +20,23 @@ export const createGenerator =
       then(contents => appender.appendAll(contents))
   }
 
-const saveTo = (outputPath: string) => async (yaml: string) => {
-  const appender = createAppender(outputPath)
-  await appender.clear()
-  await appender.append(yaml)
-  console.log("[output.js] generated:", yaml)
-}
-
-interface ResolverParams {
-  outputPath: string
-  templatePath: string
-  generators: Generator[]
-}
-
-export const output =
-  async ({ outputPath, generators, templatePath }: ResolverParams): Promise<void> => {
+export const Runner = {
+  run: (generators: Generator[]): Promise<void> => {
     const generate = generators.reduce((f, g) => () => f().then(g))
     return generate()
-      .then(() => resolveYamlRef(templatePath))
-      .then(saveTo(outputPath))
-      .catch(err => {
-        console.error("[output.js] unexpected error", err)
-        process.exit(1)
-      })
+  },
+}
+
+interface WriterParams {
+  templatePath: string
+  outputPath: string
+}
+
+export const writeYaml =
+  ({ templatePath, outputPath }: WriterParams): Generator => async () => {
+    const yaml = await resolveYamlRef(templatePath)
+    const appender = createAppender(outputPath)
+    await appender.clear()
+    await appender.append(yaml)
+    console.log("[generator] done:", yaml)
   }

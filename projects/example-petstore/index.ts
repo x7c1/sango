@@ -1,10 +1,10 @@
 import { traverseTexts, traverseYamls } from "moccasin/loader/traverse"
-import { createGenerator, output } from "moccasin/generator"
+import { createGenerator, Runner, writeYaml } from "moccasin/generator"
 
 process.chdir("./projects/example-petstore")
 
-output({
-  generators: [
+Runner
+  .run([
     createGenerator({
       outputPath: "./components/schemas.gen.yaml",
       traverser: traverseTexts("./components/schemas"),
@@ -13,7 +13,12 @@ output({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),
-  ],
-  templatePath: "./index.template.yaml",
-  outputPath: "./dist/index.gen.yaml",
-})
+  ])
+  .then(writeYaml({
+    outputPath: "./dist/index.gen.yaml",
+    templatePath: "./index.template.yaml",
+  }))
+  .catch(err => {
+    console.error("[index.ts] unexpected error", err)
+    process.exit(1)
+  })

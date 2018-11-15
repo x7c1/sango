@@ -12,12 +12,13 @@ interface GeneratorParams {
 }
 
 export const createGenerator =
-  ({ outputPath, traverser }: GeneratorParams): Generator => () => {
+  ({ outputPath, traverser }: GeneratorParams): Generator => async () => {
     const appender = createAppender(outputPath)
-    return appender.clear().
-      then(traverser).
-      then(loader => loader.loadContents()).
-      then(contents => appender.appendAll(contents))
+    await appender.clear()
+
+    const loader = await traverser()
+    const contents = await loader.loadContents()
+    await appender.appendAll(contents)
   }
 
 export const Runner = {

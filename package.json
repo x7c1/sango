@@ -1,7 +1,7 @@
 {
   "name": "moccasin",
   "version": "0.0.1",
-  "description": "a leather shoes",
+  "description": "a leather shoe.",
   "scripts": {
     "tslint": "./scripts/projects.sh 'tslint --project'",
     "tslint:fix": "./scripts/projects.sh 'tslint --fix --project'",

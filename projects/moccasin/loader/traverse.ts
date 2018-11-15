@@ -18,11 +18,11 @@ const directoriesOf = async (dir: string): Promise<string[]> => {
   return (await Promise.all(dirs)).filter(nonEmpty)
 }
 
-export const traverseTexts = (dir: string) => (): Promise<FragmentsLoader> => {
+export const traverseTexts = (dir: string): Traverser => () => {
   return fromTexts(dir)
 }
 
-export const traverseYamls = (dir: string) => (): Promise<FragmentsLoader> => {
+export const traverseYamls = (dir: string): Traverser => () => {
   const merge = (loaders: FragmentsLoader[]) => loaders.reduce(
     (a, b) => a.appendLoader(b),
   )
@@ -32,4 +32,8 @@ export const traverseYamls = (dir: string) => (): Promise<FragmentsLoader> => {
   return directoriesOf(dir).
     then(traverseAll).
     then(merge)
+}
+
+export interface Traverser {
+  (): Promise<FragmentsLoader>
 }

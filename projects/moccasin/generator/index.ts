@@ -20,7 +20,7 @@ export const createGenerator =
       then(contents => appender.appendAll(contents))
   }
 
-const outputTo = (outputPath: string) => async (yaml: string) => {
+const saveTo = (outputPath: string) => async (yaml: string) => {
   const appender = createAppender(outputPath)
   await appender.clear()
   await appender.append(yaml)
@@ -33,12 +33,12 @@ interface ResolverParams {
   generators: Generator[]
 }
 
-export const toYaml =
+export const output =
   async ({ outputPath, generators, templatePath }: ResolverParams): Promise<void> => {
     const generate = generators.reduce((f, g) => () => f().then(g))
     return generate()
       .then(() => resolveYamlRef(templatePath))
-      .then(outputTo(outputPath))
+      .then(saveTo(outputPath))
       .catch(err => {
         console.error("[output.js] unexpected error", err)
         process.exit(1)

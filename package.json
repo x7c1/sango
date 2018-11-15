@@ -10,15 +10,18 @@
     "lint": "npm run tsfmt:verify && npm run tslint",
     "format": "npm run tsfmt:replace && npm run tslint:fix",
     "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
-    "sample:test": "./scripts/mocha-all.sh ./projects/sample-service",
-    "sample:build": "tsc --build ./projects/sample-service",
-    "sample": "NODE_PATH=./dist node ./dist/sample-service"
+    "sample:test": "./scripts/mocha-all.sh ./projects/example-petstore",
+    "sample:build": "tsc --build ./projects/example-petstore",
+    "sample": "NODE_PATH=./dist node ./dist/example-petstore"
   },
   "author": "x7c1",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "js-yaml": "^3.12.0"
+  },
   "devDependencies": {
     "@types/chai": "^4.1.7",
+    "@types/js-yaml": "^3.11.2",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.5",
     "chai": "^4.2.0",

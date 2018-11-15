@@ -1,7 +1,8 @@
 node_modules
 
 # moccasin
-dist
+dist/*
+!.gitkeep
 
 # WebStorm
 .idea

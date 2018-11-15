@@ -11,9 +11,8 @@ const options = {
   resolveLocalRefs: false,
 }
 
-/**
- * https://github.com/whitlockjc/json-refs/blob/master/docs/API.md#module_JsonRefs..ResolvedRefDetails
- */
+// tslint:disable-next-line:max-line-length
+// https://github.com/whitlockjc/json-refs/blob/master/docs/API.md#module_JsonRefs..ResolvedRefDetails
 const extractError = (results: ResolvedRefsResults) => {
   const toError = (ref: any) => {
 

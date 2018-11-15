@@ -16,7 +16,7 @@ const options = {
 const extractError = (results: ResolvedRefsResults) => {
   const toError = (ref: any) => {
 
-    // $ref: '#/components/...' などは missing エラーから除外する
+    // ignore missing error like $ref: '#/components/...'
     const isOpenApiRef = ref.missing && ref.uri.startsWith("#/")
     return !isOpenApiRef && ref.error
   }

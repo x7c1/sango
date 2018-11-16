@@ -1,6 +1,7 @@
-import { createAppender } from "../appender"
+import { Appender } from "../appender"
 import { Traverser } from "../loader/traverse"
 import { resolveYamlRef } from "./resolve"
+import { Logger } from "../logger"
 
 interface Generator {
   (): Promise<void>
@@ -10,16 +11,6 @@ interface GeneratorParams {
   traverser: Traverser
   outputPath: string
 }
-
-export const createGenerator =
-  ({ outputPath, traverser }: GeneratorParams): Generator => async () => {
-    const appender = createAppender(outputPath)
-    await appender.clear()
-
-    const loader = await traverser()
-    const contents = await loader.loadContents()
-    await appender.appendAll(contents)
-  }
 
 export const Runner = {
   run: (generators: Generator[]): Promise<void> => {
@@ -33,11 +24,31 @@ interface WriterParams {
   outputPath: string
 }
 
-export const writeYaml =
-  ({ templatePath, outputPath }: WriterParams): Generator => async () => {
-    const yaml = await resolveYamlRef(templatePath)
-    const appender = createAppender(outputPath)
-    await appender.clear()
-    await appender.append(yaml)
-    console.log("[generator] done:", yaml)
-  }
+interface GeneratorContext {
+  logger: Logger
+}
+
+export const setupGenerator = ({ logger }: GeneratorContext) => ({
+
+  createGenerator ({ outputPath, traverser }: GeneratorParams): Generator {
+    return async () => {
+      const appender = Appender({ outputPath, logger })
+      await appender.clear()
+
+      const loader = await traverser()
+      const contents = await loader.loadContents()
+      await appender.appendAll(contents)
+    }
+  },
+
+  writeYaml ({ templatePath, outputPath }: WriterParams): Generator {
+    return async () => {
+      const yaml = await resolveYamlRef(templatePath)
+      const appender = Appender({ outputPath, logger })
+      await appender.clear()
+      await appender.append(yaml)
+
+      logger.info("[generator] done: " + yaml)
+    }
+  },
+})

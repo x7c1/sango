@@ -1,10 +1,13 @@
 import { expect } from "chai"
-import { traverseTexts, traverseYamls } from "moccasin/loader/traverse"
+import { FileLogger } from "moccasin/logger/FileLogger"
+import { setupTraverser } from "moccasin/loader/traverse"
 
 const directories = {
   schemas: "./projects/example-petstore/components/schemas",
   paths: "./projects/example-petstore/paths",
 }
+
+const { traverseTexts, traverseYamls } = setupTraverser({ logger: FileLogger })
 
 describe("traverseTexts", () => {
   it("concat all texts in a given directory", async () => {

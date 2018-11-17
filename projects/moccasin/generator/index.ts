@@ -7,9 +7,18 @@ interface Generator {
   (): Promise<void>
 }
 
-interface GeneratorParams {
+interface WriterParams {
   traverser: Traverser
   outputPath: string
+}
+
+interface ComposerParams {
+  templatePath: string
+  outputPath: string
+}
+
+interface GeneratorContext {
+  logger: Logger
 }
 
 export const Runner = {
@@ -19,18 +28,9 @@ export const Runner = {
   },
 }
 
-interface WriterParams {
-  templatePath: string
-  outputPath: string
-}
-
-interface GeneratorContext {
-  logger: Logger
-}
-
 export const setupGenerator = ({ logger }: GeneratorContext) => ({
 
-  createGenerator ({ outputPath, traverser }: GeneratorParams): Generator {
+  writeYaml ({ outputPath, traverser }: WriterParams): Generator {
     return async () => {
       const appender = Appender({ outputPath, logger })
       await appender.clear()
@@ -41,7 +41,7 @@ export const setupGenerator = ({ logger }: GeneratorContext) => ({
     }
   },
 
-  writeYaml ({ templatePath, outputPath }: WriterParams): Generator {
+  composeYaml ({ templatePath, outputPath }: ComposerParams): Generator {
     return async () => {
       const yaml = await resolveYamlRef(templatePath)
       const appender = Appender({ outputPath, logger })

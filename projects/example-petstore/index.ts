@@ -5,21 +5,21 @@ import { ConsoleLogger, Logger } from "moccasin/logger"
 process.chdir("./projects/example-petstore")
 
 const logger: Logger = ConsoleLogger
-const { createGenerator, writeYaml } = setupGenerator({ logger })
+const { writeYaml, composeYaml } = setupGenerator({ logger })
 const { traverseTexts, traverseYamls } = setupTraverser({ logger })
 
 Runner
   .run([
-    createGenerator({
+    writeYaml({
       outputPath: "./components/schemas.gen.yaml",
       traverser: traverseTexts("./components/schemas"),
     }),
-    createGenerator({
+    writeYaml({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),
   ])
-  .then(writeYaml({
+  .then(composeYaml({
     outputPath: "./dist/index.gen.yaml",
     templatePath: "./index.template.yaml",
   }))

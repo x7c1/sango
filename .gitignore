@@ -4,5 +4,8 @@ node_modules
 dist/*
 !.gitkeep
 
+# example
+*.gen.yaml
+
 # WebStorm
 .idea

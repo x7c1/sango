@@ -1,14 +1,13 @@
-import { ResolvedRefsResults, resolveRefs } from "json-refs"
+import { JsonRefsOptions, ResolvedRefsResults, resolveRefs } from "json-refs"
 import { readFileSync } from "fs"
 import { dump, load } from "js-yaml"
 
-const options = {
+const options: JsonRefsOptions = {
   loaderOptions: {
     processContent: (result: any, callback: any) => {
       callback(undefined, load(result.text))
     },
   },
-  resolveLocalRefs: false,
 }
 
 // tslint:disable-next-line:max-line-length

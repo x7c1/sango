@@ -23,7 +23,7 @@ export const FileLogger = ({ filename }: FileLoggerParams): Logger => {
     info: message => {
       logger.info(message)
     },
-    error:  (message, error) => {
+    error: (message, error) => {
       logger.error(message, error)
     },
   }

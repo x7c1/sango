@@ -1,3 +1,4 @@
+import * as path from "path"
 import { readdir, stat } from "../fs_promise"
 import { FragmentsLoader, setupLoader } from "./index"
 import { Logger } from "../logger"
@@ -24,15 +25,16 @@ export interface Traverser {
 }
 
 interface TraverserContext {
-  logger: Logger,
+  logger: Logger
+  basePath: string
 }
 
-export const setupTraverser = ({ logger }: TraverserContext) => {
+export const setupTraverser = ({ logger, basePath = "." }: TraverserContext) => {
   const { fromTexts, fromYamls } = setupLoader({ logger })
   return ({
     traverseTexts (dir: string): Traverser {
       return () => {
-        return fromTexts(dir)
+        return fromTexts(path.resolve(basePath, dir))
       }
     },
     traverseYamls (dir: string): Traverser {
@@ -43,7 +45,9 @@ export const setupTraverser = ({ logger }: TraverserContext) => {
         const traverseAll = (dirs: string[]) => Promise.all(
           dirs.map(fromYamls),
         )
-        return directoriesOf(dir).then(traverseAll).then(merge)
+        return directoriesOf(path.resolve(basePath, dir))
+          .then(traverseAll)
+          .then(merge)
       }
     },
   })

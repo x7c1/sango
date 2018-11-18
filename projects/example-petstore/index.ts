@@ -1,12 +1,13 @@
 import { setupTraverser } from "moccasin/loader/traverse"
 import { setupGenerator, Runner } from "moccasin/generator"
-import { ConsoleLogger, Logger } from "moccasin/logger"
+import { ConsoleLogger } from "moccasin/logger"
 
-process.chdir("./projects/example-petstore")
-
-const logger: Logger = ConsoleLogger
-const { writeYaml, composeYaml } = setupGenerator({ logger })
-const { traverseTexts, traverseYamls } = setupTraverser({ logger })
+const context = {
+  logger: ConsoleLogger,
+  basePath: "./projects/example-petstore",
+}
+const { writeYaml, composeYaml } = setupGenerator(context)
+const { traverseTexts, traverseYamls } = setupTraverser(context)
 
 Runner
   .run([
@@ -24,6 +25,6 @@ Runner
     templatePath: "./index.template.yaml",
   }))
   .catch(err => {
-    logger.error("[index.ts] unexpected error", err)
+    context.logger.error("[index.ts] unexpected error", err)
     process.exit(1)
   })

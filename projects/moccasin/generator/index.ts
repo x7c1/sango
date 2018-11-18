@@ -1,7 +1,9 @@
+import * as path from "path"
 import { Appender } from "../appender"
 import { Traverser } from "../loader/traverse"
 import { resolveYamlRef } from "./resolve"
 import { Logger } from "../logger"
+import { attempt } from "../attempt"
 
 interface Generator {
   (): Promise<void>
@@ -19,6 +21,7 @@ interface ComposerParams {
 
 interface GeneratorContext {
   logger: Logger
+  basePath: string
 }
 
 export const Runner = {
@@ -28,11 +31,14 @@ export const Runner = {
   },
 }
 
-export const setupGenerator = ({ logger }: GeneratorContext) => ({
+export const setupGenerator = ({ logger, basePath = "." }: GeneratorContext) => ({
 
   writeYaml ({ outputPath, traverser }: WriterParams): Generator {
     return async () => {
-      const appender = Appender({ outputPath, logger })
+      const appender = Appender({
+        outputPath: path.resolve(basePath, outputPath),
+        logger,
+      })
       await appender.clear()
 
       const loader = await traverser()
@@ -43,11 +49,18 @@ export const setupGenerator = ({ logger }: GeneratorContext) => ({
 
   composeYaml ({ templatePath, outputPath }: ComposerParams): Generator {
     return async () => {
-      const yaml = await resolveYamlRef(templatePath)
-      const appender = Appender({ outputPath, logger })
+      const original = process.cwd()
+      const yaml = await attempt({
+        onStart: () => process.chdir(basePath),
+        onProcess: () => resolveYamlRef(templatePath),
+        onFinish: () => process.chdir(original),
+      })
+      const appender = Appender({
+        outputPath: path.resolve(basePath, outputPath),
+        logger,
+      })
       await appender.clear()
       await appender.append(yaml)
-
       logger.info("[generator] done: " + yaml)
     }
   },

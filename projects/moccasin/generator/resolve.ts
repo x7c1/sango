@@ -1,6 +1,6 @@
 import { JsonRefsOptions, ResolvedRefsResults, resolveRefs } from "json-refs"
-import { readFileSync } from "fs"
 import { dump, load } from "js-yaml"
+import { readFile } from "../fs_promise"
 
 const options: JsonRefsOptions = {
   loaderOptions: {
@@ -27,12 +27,12 @@ const extractError = (results: ResolvedRefsResults) => {
     filter(_ => _)
 }
 
-export const resolveYamlRef = (filePath: string): Promise<string> => {
-  const root = load(readFileSync(filePath).toString())
-  return resolveRefs(root, options).then((results: ResolvedRefsResults) => {
-    const errors = extractError(results)
-    return errors.length > 0 ?
-      Promise.reject(errors) :
-      Promise.resolve(dump(results.resolved))
-  })
+export const resolveYamlRef = async (filePath: string): Promise<string> => {
+  const text = await readFile(filePath)
+  const root = load(text)
+  const results = await resolveRefs(root, options)
+  const errors = extractError(results)
+  return errors.length > 0 ?
+    Promise.reject(errors) :
+    Promise.resolve(dump(results.resolved))
 }

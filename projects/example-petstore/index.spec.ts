@@ -3,11 +3,14 @@ import { FileLogger } from "moccasin/logger/FileLogger"
 import { setupTraverser } from "moccasin/loader/traverse"
 
 const directories = {
-  schemas: "./projects/example-petstore/components/schemas",
-  paths: "./projects/example-petstore/paths",
+  schemas: "./components/schemas",
+  paths: "./paths",
 }
 
-const { traverseTexts, traverseYamls } = setupTraverser({ logger: FileLogger })
+const { traverseTexts, traverseYamls } = setupTraverser({
+  logger: FileLogger,
+  basePath: "./projects/example-petstore",
+})
 
 describe("traverseTexts", () => {
   it("concat all texts in a given directory", async () => {

@@ -2,11 +2,6 @@ import { expect } from "chai"
 import { FileLogger } from "moccasin/logger/FileLogger"
 import { setupTraverser } from "moccasin/loader/traverse"
 
-const directories = {
-  schemas: "./components/schemas",
-  paths: "./paths",
-}
-
 const { traverseTexts, traverseYamls } = setupTraverser({
   logger: FileLogger,
   basePath: "./projects/example-petstore",
@@ -14,7 +9,7 @@ const { traverseTexts, traverseYamls } = setupTraverser({
 
 describe("traverseTexts", () => {
   it("concat all texts in a given directory", async () => {
-    const loader = await traverseTexts(directories.schemas)()
+    const loader = await traverseTexts("./components/schemas")()
     const contents = await loader.loadContents()
     const schemas = contents.map(_ => _.dump()).join("")
 
@@ -26,7 +21,7 @@ describe("traverseTexts", () => {
 
 describe("traverseYamls", () => {
   it("concat all yamls in a given directory", async () => {
-    const loader = await traverseYamls(directories.paths)()
+    const loader = await traverseYamls("./paths")()
     const contents = await loader.loadContents()
     const paths = contents.map(_ => _.dump()).join("")
 

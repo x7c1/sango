@@ -46,7 +46,7 @@ describe("generated OpenAPI yaml", () => {
 
     const path = "./projects/example-petstore/dist/index.gen.yaml"
     const text = await readFile(path)
-    return load(text)
+    return await load(text)
   }
 
   it("should contain paths", async () => {

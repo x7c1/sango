@@ -27,7 +27,7 @@ describe("attempt", () => {
     let [onStarted, onProcessed, onFinished] = [false, false, false]
 
     try {
-      const result = await attempt({
+      await attempt({
         onStart: () => {
           onStarted = true
         },
@@ -51,7 +51,7 @@ describe("attempt", () => {
     let [onStarted, onProcessed, onFinished] = [false, false, false]
 
     try {
-      const result = await attempt({
+      await attempt({
         onStart: () => {
           onStarted = true
         },

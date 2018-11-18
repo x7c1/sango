@@ -6,13 +6,11 @@ interface AttemptParams<A> {
 }
 
 export const attempt =
-  <A> ({ onStart, onProcess, onFinish }: AttemptParams<A>): Promise<A> => {
-    onStart()
-    return onProcess().then(result => {
+  async <A> ({ onStart, onProcess, onFinish }: AttemptParams<A>): Promise<A> => {
+    try {
+      onStart()
+      return await onProcess()
+    } finally {
       onFinish()
-      return result
-    }).catch(e => {
-      onFinish()
-      throw e
-    })
+    }
   }

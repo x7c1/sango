@@ -1,11 +1,11 @@
 import { expect } from "chai"
 import { load } from "js-yaml"
-import { FileLogger } from "moccasin/logger/FileLogger"
 import { setupTraverser } from "moccasin/loader/traverse"
 import { readFile } from "moccasin/fs_promise"
+import { logger } from "./index"
 
 const { traverseTexts, traverseYamls } = setupTraverser({
-  logger: FileLogger,
+  logger,
   basePath: "./projects/example-petstore",
 })
 
@@ -42,11 +42,11 @@ describe("generated OpenAPI yaml", () => {
 
   const read = async () => {
     // run generator by this line
-    require("./index")
+    await require("./index").main
 
     const path = "./projects/example-petstore/dist/index.gen.yaml"
     const text = await readFile(path)
-    return await load(text)
+    return load(text)
   }
 
   it("should contain paths", async () => {

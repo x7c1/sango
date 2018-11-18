@@ -1,15 +1,17 @@
 import { setupTraverser } from "moccasin/loader/traverse"
 import { setupGenerator, Runner } from "moccasin/generator"
-import { ConsoleLogger } from "moccasin/logger"
+import { FileLogger } from "moccasin/logger/FileLogger"
+
+export const logger = FileLogger({ filename: "example.log" })
 
 const context = {
-  logger: ConsoleLogger,
+  logger,
   basePath: "./projects/example-petstore",
 }
 const { writeYaml, composeYaml } = setupGenerator(context)
 const { traverseTexts, traverseYamls } = setupTraverser(context)
 
-Runner
+export const main = Runner
   .run([
     writeYaml({
       outputPath: "./components/schemas.gen.yaml",

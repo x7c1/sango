@@ -2,7 +2,9 @@ import { setupTraverser } from "moccasin/loader/traverse"
 import { setupGenerator, Runner } from "moccasin/generator"
 import { FileLogger } from "moccasin/logger/FileLogger"
 
-export const logger = FileLogger({ filename: "example.log" })
+export const logger = FileLogger({
+  filename: "logs/example.%DATE%.log",
+})
 
 const context = {
   logger,

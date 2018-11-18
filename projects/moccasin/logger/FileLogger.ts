@@ -1,10 +1,15 @@
 import { Logger } from "./"
 import * as winston from "winston"
+import * as DailyRotateFile from "winston-daily-rotate-file"
 
 const createLogger = (filename: string) => winston.createLogger({
   format: winston.format.cli(),
   transports: [
-    new winston.transports.File({ filename }),
+    new DailyRotateFile({
+      filename,
+      datePattern: "YYYY-MM-DD",
+      maxFiles: 5,
+    }),
   ],
 })
 
@@ -19,7 +24,7 @@ export const FileLogger = ({ filename }: FileLoggerParams): Logger => {
       logger.info(message)
     },
     error:  (message, error) => {
-      logger.error(message)
+      logger.error(message, error)
     },
   }
 }

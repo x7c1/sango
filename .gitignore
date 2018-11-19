@@ -6,6 +6,7 @@ dist/*
 
 # example
 *.gen.yaml
+logs/*
 
 # WebStorm
 .idea

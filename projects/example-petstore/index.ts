@@ -1,13 +1,9 @@
-import { setupTraverser } from "sango/loader/traverse"
-import { setupGenerator, Runner } from "sango/generator"
-import { FileLogger } from "sango/logger/FileLogger"
+import { setupTraverser, setupGenerator, Runner, FileLogger } from "sango"
 
-export const logger = FileLogger({
-  filename: "logs/example.%DATE%.log",
-})
-
-const context = {
-  logger,
+export const context = {
+  logger: FileLogger({
+    filename: "logs/example.%DATE%.log",
+  }),
   basePath: "./projects/example-petstore",
 }
 const { writeYaml, composeYaml } = setupGenerator(context)
@@ -29,6 +25,6 @@ export const main = Runner
     templatePath: "./index.template.yaml",
   }))
   .catch(err => {
-    context.logger.error("[index.ts] unexpected error", err)
+    console.error("[index.ts] unexpected error", err)
     process.exit(1)
   })

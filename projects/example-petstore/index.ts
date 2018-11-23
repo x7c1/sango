@@ -1,9 +1,7 @@
 import { setupTraverser, setupGenerator, Runner, FileLogger } from "sango"
 
 export const context = {
-  logger: FileLogger({
-    filename: "logs/example.%DATE%.log",
-  }),
+  logger: FileLogger({ filename: "logs/example.%DATE%.log" }),
   basePath: "./projects/example-petstore",
 }
 const { write, resolve, output } = setupGenerator(context)

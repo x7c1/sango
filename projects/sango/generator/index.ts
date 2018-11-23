@@ -4,9 +4,10 @@ import { Traverser } from "../loader/traverse"
 import { resolveYamlRef } from "./resolve"
 import { Logger } from "../logger"
 import { attempt } from "../attempt"
+import { PostAssertable } from "./PostAssertable"
 
-interface Generator {
-  (): Promise<void>
+export interface Generator<A> {
+  (): Promise<A>
 }
 
 interface WriterParams {
@@ -25,43 +26,44 @@ interface GeneratorContext {
 }
 
 export const Runner = {
-  run: (generators: Generator[]): Promise<void> => {
+  run: (generators: Generator<void>[]): Promise<void> => {
     const generate = generators.reduce((f, g) => () => f().then(g))
     return generate()
   },
 }
 
-export const setupGenerator = ({ logger, basePath = "." }: GeneratorContext) => ({
+export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
 
-  writeYaml ({ outputPath, traverser }: WriterParams): Generator {
+  write ({ outputPath, traverser }: WriterParams): Generator<void> {
     return async () => {
+      const loader = await traverser()
+      const contents = await loader.loadContents()
       const appender = Appender({
         outputPath: path.resolve(basePath, outputPath),
         logger,
       })
       await appender.clear()
-
-      const loader = await traverser()
-      const contents = await loader.loadContents()
       await appender.appendAll(contents)
     }
   },
-
-  composeYaml ({ templatePath, outputPath }: ComposerParams): Generator {
-    return async () => {
+  resolve (templatePath: string): Generator<string> & PostAssertable<string> {
+    return PostAssertable(async () => {
       const original = process.cwd()
       const yaml = await attempt({
         onStart: () => process.chdir(basePath),
         onProcess: () => resolveYamlRef(templatePath),
         onFinish: () => process.chdir(original),
       })
-      const appender = Appender({
-        outputPath: path.resolve(basePath, outputPath),
-        logger,
-      })
-      await appender.clear()
-      await appender.append(yaml)
-      logger.info("[generator] done: " + yaml)
-    }
+      logger.info("[generator#compose] done.")
+      return yaml
+    })
+  },
+  output: (outputPath: string) => async (yaml: string): Promise<void> => {
+    const appender = Appender({
+      outputPath: path.resolve(basePath, outputPath),
+      logger,
+    })
+    await appender.clear()
+    await appender.append(yaml)
   },
 })

@@ -25,6 +25,7 @@ class AppenderImpl implements Appender {
   }
 
   append (content: string): Promise<void> {
+    this.logger.info("[Appender] append: " + this.outputPath)
     return appendFile(this.outputPath, content)
   }
 

@@ -6,24 +6,22 @@ export const context = {
   }),
   basePath: "./projects/example-petstore",
 }
-const { writeYaml, composeYaml } = setupGenerator(context)
+const { write, resolve, output } = setupGenerator(context)
 const { traverseTexts, traverseYamls } = setupTraverser(context)
 
 export const main = Runner
   .run([
-    writeYaml({
+    write({
       outputPath: "./components/schemas.gen.yaml",
       traverser: traverseTexts("./components/schemas"),
     }),
-    writeYaml({
+    write({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),
   ])
-  .then(composeYaml({
-    outputPath: "./dist/index.gen.yaml",
-    templatePath: "./index.template.yaml",
-  }))
+  .then(resolve("./index.template.yaml"))
+  .then(output("./dist/index.gen.yaml"))
   .catch(err => {
     console.error("[index.ts] unexpected error", err)
     process.exit(1)

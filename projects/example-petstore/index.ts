@@ -1,6 +1,6 @@
-import { setupTraverser } from "moccasin/loader/traverse"
-import { setupGenerator, Runner } from "moccasin/generator"
-import { FileLogger } from "moccasin/logger/FileLogger"
+import { setupTraverser } from "sango/loader/traverse"
+import { setupGenerator, Runner } from "sango/generator"
+import { FileLogger } from "sango/logger/FileLogger"
 
 export const logger = FileLogger({
   filename: "logs/example.%DATE%.log",

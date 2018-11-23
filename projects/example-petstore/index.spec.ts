@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { load } from "js-yaml"
-import { setupTraverser } from "moccasin/loader/traverse"
-import { readFile } from "moccasin/fs_promise"
+import { setupTraverser } from "sango/loader/traverse"
+import { readFile } from "sango/fs_promise"
 import { logger } from "./index"
 
 const { traverseTexts, traverseYamls } = setupTraverser({

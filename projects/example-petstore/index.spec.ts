@@ -1,14 +1,17 @@
 import { expect } from "chai"
-import { traverseTexts, traverseYamls } from "moccasin/loader/traverse"
+import { load } from "js-yaml"
+import { setupTraverser } from "moccasin/loader/traverse"
+import { readFile } from "moccasin/fs_promise"
+import { logger } from "./index"
 
-const directories = {
-  schemas: "./projects/example-petstore/components/schemas",
-  paths: "./projects/example-petstore/paths",
-}
+const { traverseTexts, traverseYamls } = setupTraverser({
+  logger,
+  basePath: "./projects/example-petstore",
+})
 
 describe("traverseTexts", () => {
   it("concat all texts in a given directory", async () => {
-    const loader = await traverseTexts(directories.schemas)()
+    const loader = await traverseTexts("./components/schemas")()
     const contents = await loader.loadContents()
     const schemas = contents.map(_ => _.dump()).join("")
 
@@ -20,7 +23,7 @@ describe("traverseTexts", () => {
 
 describe("traverseYamls", () => {
   it("concat all yamls in a given directory", async () => {
-    const loader = await traverseYamls(directories.paths)()
+    const loader = await traverseYamls("./paths")()
     const contents = await loader.loadContents()
     const paths = contents.map(_ => _.dump()).join("")
 
@@ -32,5 +35,33 @@ describe("traverseYamls", () => {
 
     const m3 = paths.match(/\/users\/{userId}/g)!
     expect(m3.length).to.eq(1)
+  })
+})
+
+describe("generated OpenAPI yaml", () => {
+
+  const read = async () => {
+    // run generator by this line
+    await require("./index").main
+
+    const path = "./projects/example-petstore/dist/index.gen.yaml"
+    const text = await readFile(path)
+    return load(text)
+  }
+
+  it("should contain paths", async () => {
+    const root = await read()
+    expect(root["paths"]["/pets"]["post"]).to.exist
+    expect(root["paths"]["/pets"]["get"]).to.exist
+    expect(root["paths"]["/users/{userId}"]["get"]).to.exist
+    expect(root["paths"]["/users/{userId}"]["post"]).to.not.exist
+  })
+
+  it("should contain components", async () => {
+    const root = await read()
+    expect(root["components"]["schemas"]["Error"]).to.exist
+    expect(root["components"]["schemas"]["Pets"]).to.exist
+    expect(root["components"]["schemas"]["Pet"]).to.exist
+    expect(root["components"]["schemas"]["User"]).to.exist
   })
 })

@@ -1,5 +1,7 @@
+import * as path from "path"
 import { readdir, stat } from "../fs_promise"
-import { FragmentsLoader, fromTexts, fromYamls } from "./loader"
+import { FragmentsLoader, setupLoader } from "./index"
+import { Logger } from "../logger"
 
 // rf. https://stackoverflow.com/a/46700791
 const nonEmpty = <A> (value: A | null | undefined): value is A => {
@@ -18,18 +20,35 @@ const directoriesOf = async (dir: string): Promise<string[]> => {
   return (await Promise.all(dirs)).filter(nonEmpty)
 }
 
-export const traverseTexts = (dir: string) => (): Promise<FragmentsLoader> => {
-  return fromTexts(dir)
+export interface Traverser {
+  (): Promise<FragmentsLoader>
 }
 
-export const traverseYamls = (dir: string) => (): Promise<FragmentsLoader> => {
-  const merge = (loaders: FragmentsLoader[]) => loaders.reduce(
-    (a, b) => a.appendLoader(b),
-  )
-  const traverseAll = (dirs: string[]) => Promise.all(
-    dirs.map(fromYamls),
-  )
-  return directoriesOf(dir).
-    then(traverseAll).
-    then(merge)
+interface TraverserContext {
+  logger: Logger
+  basePath: string
+}
+
+export const setupTraverser = ({ logger, basePath = "." }: TraverserContext) => {
+  const { fromTexts, fromYamls } = setupLoader({ logger })
+  return ({
+    traverseTexts (dir: string): Traverser {
+      return () => {
+        return fromTexts(path.resolve(basePath, dir))
+      }
+    },
+    traverseYamls (dir: string): Traverser {
+      return () => {
+        const merge = (loaders: FragmentsLoader[]) => loaders.reduce(
+          (a, b) => a.appendLoader(b),
+        )
+        const traverseAll = (dirs: string[]) => Promise.all(
+          dirs.map(fromYamls),
+        )
+        return directoriesOf(path.resolve(basePath, dir))
+          .then(traverseAll)
+          .then(merge)
+      }
+    },
+  })
 }

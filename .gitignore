@@ -1,7 +1,12 @@
 node_modules
 
 # moccasin
-dist
+dist/*
+!.gitkeep
+
+# example
+*.gen.yaml
+logs/*
 
 # WebStorm
 .idea

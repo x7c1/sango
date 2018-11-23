@@ -1,5 +1,6 @@
 import { readdir, readFile } from "../fs_promise"
 import { load, dump } from "js-yaml"
+import { Logger } from "../logger"
 
 export class FragmentContent {
   constructor (
@@ -16,12 +17,13 @@ class ContentLoader {
   constructor (
     private readonly dir: string,
     private readonly fileName: string,
+    private readonly logger: Logger,
   ) { }
 
   private readonly path = this.dir + "/" + this.fileName
 
   loadContent (): Promise<FragmentContent> {
-    console.log("[ContentLoader] loadContent:", this.path)
+    this.logger.info("[ContentLoader] loadContent: " + this.path)
     return readFile(this.path).then(data =>
       new FragmentContent(this.path, data),
     )
@@ -85,17 +87,24 @@ class FragmentsLoaderForYamls extends FragmentsLoader {
   }
 }
 
-export const fromTexts = (dir: string): Promise<FragmentsLoader> => {
-  const toLoaders = (files: string[]) => files.map(fileName => {
-    return new ContentLoader(dir, fileName)
-  })
-  return readdir(dir).
-    then(toLoaders).
-    then(loaders => new FragmentsLoaderForTexts(loaders))
+interface LoaderContext {
+  logger: Logger,
 }
 
-export const fromYamls = (dir: string): Promise<FragmentsLoader> => {
-  return readdir(dir).
-    then(files => files.map(_ => dir + "/" + _)).
-    then(paths => new FragmentsLoaderForYamls(dir, paths))
+export const setupLoader = ({ logger }: LoaderContext) => {
+  return {
+    fromTexts (dir: string): Promise<FragmentsLoader> {
+      const toLoaders = (files: string[]) => files.map(fileName => {
+        return new ContentLoader(dir, fileName, logger)
+      })
+      return readdir(dir).
+        then(toLoaders).
+        then(loaders => new FragmentsLoaderForTexts(loaders))
+    },
+    fromYamls (dir: string): Promise<FragmentsLoader> {
+      return readdir(dir).
+        then(files => files.map(_ => dir + "/" + _)).
+        then(paths => new FragmentsLoaderForYamls(dir, paths))
+    },
+  }
 }

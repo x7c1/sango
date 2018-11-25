@@ -39,7 +39,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
       const loader = await traverser()
       const contents = await loader.loadContents()
       const appender = Appender({
-        outputPath: path.resolve(basePath, outputPath),
+        outputPath: path.join(basePath, outputPath),
         logger,
       })
       await appender.clear()
@@ -60,7 +60,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
   },
   output: (outputPath: string) => async (yaml: string): Promise<void> => {
     const appender = Appender({
-      outputPath: path.resolve(basePath, outputPath),
+      outputPath: path.join(basePath, outputPath),
       logger,
     })
     await appender.clear()

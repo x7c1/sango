@@ -50,9 +50,10 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
   compose (params: ComposerParams): Generator<void> {
     return async () => {
       /*
+      // todo:
       const files = await loadFiles(path.join(basePath, params.sourceDir))
       const composite = composeFiles(files)
-       const writer = FilesWriter({
+      const writer = FilesWriter({
         outputDir: path.join(basePath, params.outputDir),
         logger,
       })

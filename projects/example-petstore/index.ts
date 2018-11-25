@@ -1,4 +1,4 @@
-import { setupTraverser, setupGenerator, Runner, FileLogger } from "sango"
+import { setupTraverser, setupGenerator, Runner, FileLogger, validate } from "sango"
 
 export const context = {
   logger: FileLogger({ filename: "logs/example.%DATE%.log" }),
@@ -18,9 +18,9 @@ export const main = Runner
       traverser: traverseYamls("./paths"),
     }),
   ])
-  .then(resolve("./index.template.yaml"))
+  .then(resolve("./index.template.yaml").and(validate))
   .then(output("./dist/index.gen.yaml"))
   .catch(err => {
-    console.error("[index.ts] unexpected error", err)
+    console.error("[index.ts] unexpected error:", err)
     process.exit(1)
   })

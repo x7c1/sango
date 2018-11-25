@@ -1,0 +1,8 @@
+openapi: 3.0.0
+info:
+  $ref: ./info/index.yaml
+paths:
+  $ref: ./paths/index.gen.yaml
+components:
+  schemas:
+    $ref: ./components/schemas.gen.yaml

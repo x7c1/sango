@@ -4,16 +4,16 @@ export const context = {
   logger: FileLogger({ filename: "logs/example.%DATE%.log" }),
   basePath: "./projects/example-petstore",
 }
-const { writeFile, resolve, output } = setupGenerator(context)
+const { write, resolve, output } = setupGenerator(context)
 const { traverseTexts, traverseYamls } = setupTraverser(context)
 
 export const main = Runner
   .run([
-    writeFile({
+    write({
       outputPath: "./components/schemas.gen.yaml",
       traverser: traverseTexts("./components/schemas"),
     }),
-    writeFile({
+    write({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),

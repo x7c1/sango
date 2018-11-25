@@ -33,8 +33,7 @@ export const Runner = {
 }
 
 export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
-
-  writeFile ({ outputPath, traverser }: WriterParams): Generator<void> {
+  write ({ outputPath, traverser }: WriterParams): Generator<void> {
     return async () => {
       const loader = await traverser()
       const contents = await loader.loadContents()

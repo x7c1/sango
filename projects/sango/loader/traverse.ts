@@ -2,6 +2,7 @@ import * as path from "path"
 import { readdir, stat } from "../fs_promise"
 import { FragmentsLoader, setupLoader } from "./index"
 import { Logger } from "../logger"
+import { TextTraverser } from "./TextTraverser"
 
 // rf. https://stackoverflow.com/a/46700791
 const nonEmpty = <A> (value: A | null | undefined): value is A => {
@@ -32,10 +33,11 @@ interface TraverserContext {
 export const setupTraverser = ({ logger, basePath }: TraverserContext) => {
   const { fromTexts, fromYamls } = setupLoader({ logger })
   return ({
-    traverseTexts (dir: string): Traverser {
-      return () => {
-        return fromTexts(path.join(basePath, dir))
-      }
+    traverseTexts (...dirs: string[]): TextTraverser {
+      return dirs
+        .map(_ => path.join(basePath, _))
+        .map(_ => TextTraverser(() => fromTexts(_)))
+        .reduce((t1, t2) => t1.append(t2))
     },
     traverseYamls (dir: string): Traverser {
       return () => {

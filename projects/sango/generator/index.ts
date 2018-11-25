@@ -16,8 +16,10 @@ interface WriterParams {
 }
 
 interface ComposerParams {
-  templatePath: string
-  outputPath: string
+  outputDir: string
+  sourceDir: string
+  parentName: string
+  discriminator: string
 }
 
 interface GeneratorContext {
@@ -43,6 +45,21 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
       })
       await appender.clear()
       await appender.appendAll(contents)
+    }
+  },
+  compose (params: ComposerParams): Generator<void> {
+    return async () => {
+      /*
+      const files = await loadFiles(path.join(basePath, params.sourceDir))
+      const composite = composeFiles(files)
+       const writer = FilesWriter({
+        outputDir: path.join(basePath, params.outputDir),
+        logger,
+      })
+      await writer.clearFiles()
+      await writer.putFile(composite.parentFile)
+      await writer.putFiles(composite.childFiles)
+      */
     }
   },
   resolve (templatePath: string): Generator<string> & PostAssertable<string> {

@@ -1,7 +1,7 @@
 {
-  "name": "moccasin",
-  "version": "0.0.1",
-  "description": "a leather shoe.",
+  "name": "sango",
+  "version": "0.0.10",
+  "description": "Generate OpenAPI file from separate yamls.",
   "scripts": {
     "tslint": "./scripts/projects.sh 'tslint --project'",
     "tslint:fix": "./scripts/projects.sh 'tslint --fix --project'",
@@ -15,10 +15,25 @@
     "sample": "NODE_PATH=./dist node ./dist/example-petstore"
   },
   "author": "x7c1",
+  "repository": "https://github.com/x7c1/sango",
   "license": "MIT",
+  "main": "./dist/sango/index.js",
+  "types": "./dist/sango/index.d.ts",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist/sango",
+    "package.json"
+  ],
+  "keywords": [
+    "openapi",
+    "yaml",
+    "generator"
+  ],
   "dependencies": {
     "js-yaml": "^3.12.0",
     "json-refs": "^3.0.12",
+    "openapi-schema-validator": "^3.0.2",
     "winston": "^3.1.0",
     "winston-daily-rotate-file": "^3.5.1"
   },

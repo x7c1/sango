@@ -4,17 +4,17 @@
     "baseUrl": ".",
     "outDir": "../../dist/example-petstore",
     "paths": {
-      "moccasin": [
-        "../moccasin"
+      "sango": [
+        "../sango"
       ],
-      "moccasin/*": [
-        "../moccasin/*"
+      "sango/*": [
+        "../sango/*"
       ]
     }
   },
   "references": [
     {
-      "path": "../moccasin"
+      "path": "../sango"
     }
   ]
 }

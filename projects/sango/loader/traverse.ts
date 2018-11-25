@@ -29,12 +29,12 @@ interface TraverserContext {
   basePath: string
 }
 
-export const setupTraverser = ({ logger, basePath = "." }: TraverserContext) => {
+export const setupTraverser = ({ logger, basePath }: TraverserContext) => {
   const { fromTexts, fromYamls } = setupLoader({ logger })
   return ({
     traverseTexts (dir: string): Traverser {
       return () => {
-        return fromTexts(path.resolve(basePath, dir))
+        return fromTexts(path.join(basePath, dir))
       }
     },
     traverseYamls (dir: string): Traverser {
@@ -45,7 +45,7 @@ export const setupTraverser = ({ logger, basePath = "." }: TraverserContext) => 
         const traverseAll = (dirs: string[]) => Promise.all(
           dirs.map(fromYamls),
         )
-        return directoriesOf(path.resolve(basePath, dir))
+        return directoriesOf(path.join(basePath, dir))
           .then(traverseAll)
           .then(merge)
       }

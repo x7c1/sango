@@ -1,13 +1,10 @@
 import { expect } from "chai"
 import { load } from "js-yaml"
-import { setupTraverser } from "moccasin/loader/traverse"
-import { readFile } from "moccasin/fs_promise"
-import { logger } from "./index"
+import { setupTraverser } from "sango/loader/traverse"
+import { readFile } from "sango/fs_promise"
+import { context } from "./index"
 
-const { traverseTexts, traverseYamls } = setupTraverser({
-  logger,
-  basePath: "./projects/example-petstore",
-})
+const { traverseTexts, traverseYamls } = setupTraverser(context)
 
 describe("traverseTexts", () => {
   it("concat all texts in a given directory", async () => {

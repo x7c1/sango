@@ -1,34 +1,26 @@
-import { setupTraverser } from "moccasin/loader/traverse"
-import { setupGenerator, Runner } from "moccasin/generator"
-import { FileLogger } from "moccasin/logger/FileLogger"
+import { setupTraverser, setupGenerator, Runner, FileLogger, validate } from "sango"
 
-export const logger = FileLogger({
-  filename: "logs/example.%DATE%.log",
-})
-
-const context = {
-  logger,
+export const context = {
+  logger: FileLogger({ filename: "logs/example.%DATE%.log" }),
   basePath: "./projects/example-petstore",
 }
-const { writeYaml, composeYaml } = setupGenerator(context)
+const { write, resolve, output } = setupGenerator(context)
 const { traverseTexts, traverseYamls } = setupTraverser(context)
 
 export const main = Runner
   .run([
-    writeYaml({
+    write({
       outputPath: "./components/schemas.gen.yaml",
       traverser: traverseTexts("./components/schemas"),
     }),
-    writeYaml({
+    write({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),
   ])
-  .then(composeYaml({
-    outputPath: "./dist/index.gen.yaml",
-    templatePath: "./index.template.yaml",
-  }))
+  .then(resolve("./index.template.yaml").and(validate))
+  .then(output("./dist/index.gen.yaml"))
   .catch(err => {
-    context.logger.error("[index.ts] unexpected error", err)
+    console.error("[index.ts] unexpected error:", err)
     process.exit(1)
   })

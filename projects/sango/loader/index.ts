@@ -9,7 +9,7 @@ export class FragmentContent {
   ) { }
 
   dump (): string {
-    return `#${this.label}\n${this.body}\n`
+    return `# ${this.label}\n${this.body}\n`
   }
 }
 

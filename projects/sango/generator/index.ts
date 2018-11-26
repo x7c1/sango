@@ -71,7 +71,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
         onProcess: () => resolveYamlRef(templatePath),
         onFinish: () => process.chdir(original),
       })
-      logger.info("[generator#compose] done.")
+      logger.info("[generator#resolve] done.")
       return yaml
     })
   },

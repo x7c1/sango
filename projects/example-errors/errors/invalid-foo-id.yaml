@@ -1,0 +1,10 @@
+comment:
+  error when foo-id is invalid.
+definition:
+  type: object
+  required:
+    - bar
+  properties:
+    bar:
+      type: string
+      description: explanation for this bar field.

@@ -20,6 +20,10 @@ export const main = Runner
       traverser: traverseTexts("./components/schemas", "./components/errors.gen"),
     }),
     write({
+      outputPath: "./components/responses.gen.yaml",
+      traverser: traverseTexts("./components/responses"),
+    }),
+    write({
       outputPath: "./paths/index.gen.yaml",
       traverser: traverseYamls("./paths"),
     }),

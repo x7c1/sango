@@ -1,0 +1,19 @@
+BadRequestResponse:
+  description: rf. https://tools.ietf.org/html/rfc7807
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - type
+          - title
+        properties:
+          type:
+            type: string
+            description: URI reference that identifies the problem type.
+            example: https://example.net/errors/invalid-foo-id
+          title:
+            type: string
+            example: requested foo-id is invalid.
+          errorAttributes:
+            $ref: '#/components/schemas/ErrorAttributes'

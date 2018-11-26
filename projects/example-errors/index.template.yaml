@@ -6,3 +6,5 @@ paths:
 components:
   schemas:
     $ref: ./components/schemas.gen.yaml
+  responses:
+    $ref: ./components/responses.gen.yaml

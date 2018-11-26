@@ -5,6 +5,7 @@ import { resolveYamlRef } from "./resolve"
 import { Logger } from "../logger"
 import { attempt } from "../attempt"
 import { PostAssertable } from "./PostAssertable"
+import { loadFiles } from "./composite"
 
 export interface Generator<A> {
   (): Promise<A>
@@ -49,9 +50,10 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
   },
   compose (params: ComposerParams): Generator<void> {
     return async () => {
+      const files = await loadFiles(path.join(basePath, params.sourceDir))
+
       /*
       // todo:
-      const files = await loadFiles(path.join(basePath, params.sourceDir))
       const composite = composeFiles(files)
       const writer = FilesWriter({
         outputDir: path.join(basePath, params.outputDir),

@@ -6,6 +6,7 @@ import { Logger } from "../logger"
 import { attempt } from "../attempt"
 import { PostAssertable } from "./PostAssertable"
 import { loadFiles } from "./composite"
+import { CompositePath } from "./composite/CompositePath"
 
 export interface Generator<A> {
   (): Promise<A>
@@ -50,11 +51,14 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
   },
   compose (params: ComposerParams): Generator<void> {
     return async () => {
-      const files = await loadFiles(path.join(basePath, params.sourceDir))
+      const files = await loadFiles(CompositePath({
+        basePath,
+        sourceDir: params.sourceDir,
+      }))
 
       /*
       // todo:
-      const composite = composeFiles(files)
+      const composite = composeFiles(files, parentName, discriminator)
       const writer = FilesWriter({
         outputDir: path.join(basePath, params.outputDir),
         logger,

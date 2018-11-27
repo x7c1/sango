@@ -1,32 +1,47 @@
-import { basename, join } from "path"
 import { readdir, stat } from "../../fs_promise"
+import { CompositePath } from "./CompositePath"
 
 class CompositeFile {
 }
 
-const loadFile = async (path: string): Promise<CompositeFile> => {
-  // todo: load file from $path and generate CompositeFile
-  console.log("loadFile", path)
-  return new CompositeFile()
+const setupLoader = async (path: CompositePath) => {
+  const stats = await stat(path.raw)
+  return stats.isDirectory() ?
+    new DirectoryLoader(path) :
+    new FileLoader(path)
 }
 
-const toComposite = (dir: string) => async (file: string): Promise<CompositeFile[]> => {
-  const path = join(dir, file)
-  const stats = await stat(path)
-  return stats.isDirectory() ? loadDirectory(path) : [ await loadFile(path) ]
+class DirectoryLoader {
+  constructor (private readonly path: CompositePath) {}
+
+  async run (): Promise<CompositeFile[]> {
+    const files = await readdir(this.path.raw)
+    const promises = files.map(this.toComposite)
+    const composites: CompositeFile[][] = await Promise.all(promises)
+    return composites.reduce((as, bs) => as.concat(bs), [])
+  }
+
+  private toComposite = async (file: string): Promise<CompositeFile[]> => {
+    const path = this.path.append(file)
+    const loader = await setupLoader(path)
+    return loader.run()
+  }
 }
 
-const loadDirectory = async (dir: string): Promise<CompositeFile[]> => {
-  const files = await readdir(dir)
-  const promises = files.map(toComposite(dir))
-  const composites: CompositeFile[][] = await Promise.all(promises)
-  return composites.reduce((as, bs) => as.concat(bs), [])
+class FileLoader {
+  constructor (private readonly path: CompositePath) {}
+
+  async run (): Promise<CompositeFile[]> {
+    // todo: load file from $path and generate CompositeFile
+    console.log("loadFile at", this.path)
+    return [new CompositeFile()]
+  }
 }
 
-export const loadFiles = async (dir: string): Promise<CompositeFile[]> => {
-  const root = basename(dir)
-  const files = await loadDirectory(dir)
-  console.log(`root: ${root}`, dir)
-  console.log(files)
-  return []
-}
+export const loadFiles =
+  async (path: CompositePath): Promise<CompositeFile[]> => {
+    const loader = await setupLoader(path)
+    const files = await loader.run()
+    console.log(files)
+    return []
+  }

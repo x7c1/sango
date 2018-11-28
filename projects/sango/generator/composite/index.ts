@@ -25,12 +25,11 @@ class DirectoryLoader {
   }
 
   private toComposite = async (file: string): Promise<CompositeFile[]> => {
-    const loader = await setupLoader({
+    return loadFiles({
       discriminator: this.params.discriminator,
       parent: this.params.parent,
       path: this.path.append(file),
     })
-    return loader.run()
   }
 }
 

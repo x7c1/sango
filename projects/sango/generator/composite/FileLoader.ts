@@ -10,7 +10,7 @@ export interface FileLoaderParams {
 }
 
 export class FileLoader {
-  constructor (private readonly params: FileLoaderParams) {}
+  constructor (private readonly params: FileLoaderParams) { }
   path = this.params.path
 
   async run (): Promise<CompositeFile[]> {

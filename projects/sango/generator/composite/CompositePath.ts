@@ -30,7 +30,7 @@ class CompositePathImpl implements CompositePath {
     private readonly basePath: string,
     private readonly sourceDir: string,
     private readonly files: string[] = [],
-  ) {}
+  ) { }
 
   raw: string = join(this.basePath, this.sourceDir, ...this.files)
 
@@ -59,6 +59,6 @@ class CompositePathImpl implements CompositePath {
   }
 }
 
-export const CompositePath = (args: { basePath: string, sourceDir: string}) => {
+export const CompositePath = (args: { basePath: string, sourceDir: string }) => {
   return new CompositePathImpl(args.basePath, args.sourceDir)
 }

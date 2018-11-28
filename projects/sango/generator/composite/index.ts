@@ -14,7 +14,7 @@ const setupLoader = async (params: FileLoaderParams) => {
 }
 
 class DirectoryLoader {
-  constructor (private readonly params: FileLoaderParams) {}
+  constructor (private readonly params: FileLoaderParams) { }
   path = this.params.path
 
   async run (): Promise<CompositeFile[]> {

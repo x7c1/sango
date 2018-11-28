@@ -1,10 +1,27 @@
 import { join } from "path"
 
 export interface CompositePath {
+
+  /**
+   * ex. "base-path/errors/foo/bar/IllegalParameter.yaml"
+   */
   raw: string
-  asDiscriminator: string
-  toQualified: string
+
+  /**
+   * ex. "errors/foo/bar/IllegalParameter.yaml"
+   */
   toRelative: string
+
+  /**
+   * ex. "foo/bar/IllegalParameter"
+   */
+  asDiscriminator: string
+
+  /**
+   * ex. "errors.foo.bar.IllegalParameter"
+   */
+  toQualified: string
+
   append (file: string): CompositePath
 }
 

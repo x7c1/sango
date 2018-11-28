@@ -20,8 +20,8 @@ interface WriterParams {
 interface ComposerParams {
   outputDir: string
   sourceDir: string
-  typeParent: string
-  typeDiscriminator: string
+  parent: string
+  discriminator: string
 }
 
 interface GeneratorContext {

@@ -14,7 +14,7 @@ export class FileLoader {
       errorKey: {
         type: "string",
         description: "discriminator of ErrorAttributes",
-        example: this.path.discriminator,
+        example: this.path.asDiscriminator,
       },
     })
     const file: CompositeFile = {

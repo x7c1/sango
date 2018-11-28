@@ -12,8 +12,8 @@ export const main = Runner
     compose({
       outputDir: "./components/errors.gen",
       sourceDir: "./errors",
-      typeParent: "ErrorAttributes",
-      typeDiscriminator: "errorKey",
+      parent: "ErrorAttributes",
+      discriminator: "errorKey",
     }),
     write({
       outputPath: "./components/schemas.gen.yaml",

@@ -2,7 +2,7 @@ import { join } from "path"
 
 export interface CompositePath {
   raw: string
-  discriminator: string
+  asDiscriminator: string
   toQualified: string
   toRelative: string
   append (file: string): CompositePath
@@ -17,7 +17,7 @@ class CompositePathImpl implements CompositePath {
 
   raw: string = join(this.basePath, this.sourceDir, ...this.files)
 
-  get discriminator () {
+  get asDiscriminator () {
     return this.files.join("/").replace(/\.[^/.]+$/, "")
   }
 

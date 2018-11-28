@@ -1,21 +1,21 @@
 import { readdir, stat } from "../../fs_promise"
-import { CompositePath } from "./CompositePath"
-import { FileLoader } from "./FileLoader"
+import { FileLoader, FileLoaderParams } from "./FileLoader"
 
 export interface CompositeFile {
   toYaml: string
   location: string
 }
 
-const setupLoader = async (path: CompositePath) => {
-  const stats = await stat(path.raw)
+const setupLoader = async (params: FileLoaderParams) => {
+  const stats = await stat(params.path.raw)
   return stats.isDirectory() ?
-    new DirectoryLoader(path) :
-    new FileLoader(path)
+    new DirectoryLoader(params) :
+    new FileLoader(params)
 }
 
 class DirectoryLoader {
-  constructor (private readonly path: CompositePath) {}
+  constructor (private readonly params: FileLoaderParams) {}
+  path = this.params.path
 
   async run (): Promise<CompositeFile[]> {
     const files = await readdir(this.path.raw)
@@ -25,14 +25,17 @@ class DirectoryLoader {
   }
 
   private toComposite = async (file: string): Promise<CompositeFile[]> => {
-    const path = this.path.append(file)
-    const loader = await setupLoader(path)
+    const loader = await setupLoader({
+      discriminator: this.params.discriminator,
+      parent: this.params.parent,
+      path: this.path.append(file),
+    })
     return loader.run()
   }
 }
 
 export const loadFiles =
-  async (path: CompositePath): Promise<CompositeFile[]> => {
-    const loader = await setupLoader(path)
+  async (params: FileLoaderParams): Promise<CompositeFile[]> => {
+    const loader = await setupLoader(params)
     return loader.run()
   }

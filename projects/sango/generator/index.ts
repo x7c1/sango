@@ -50,11 +50,16 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
     }
   },
   compose (params: ComposerParams): Generator<void> {
+    const path = CompositePath({
+      basePath,
+      sourceDir: params.sourceDir,
+    })
     return async () => {
-      const files = await loadFiles(CompositePath({
-        basePath,
-        sourceDir: params.sourceDir,
-      }))
+      const files = await loadFiles({
+        path,
+        discriminator: params.discriminator,
+        parent: params.parent,
+      })
       console.log(files)
 
       /*

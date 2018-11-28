@@ -2,6 +2,7 @@ import { join } from "path"
 
 export interface CompositePath {
   raw: string
+  discriminator: string
   toQualified: string
   toRelative: string
   append (file: string): CompositePath
@@ -15,6 +16,10 @@ class CompositePathImpl implements CompositePath {
   ) {}
 
   raw: string = join(this.basePath, this.sourceDir, ...this.files)
+
+  get discriminator () {
+    return this.files.join("/").replace(/\.[^/.]+$/, "")
+  }
 
   get toQualified () {
     const parent = join(this.sourceDir).replace(/[/]/g, ".")

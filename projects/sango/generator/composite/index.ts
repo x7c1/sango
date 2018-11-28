@@ -1,7 +1,10 @@
 import { readdir, stat } from "../../fs_promise"
 import { CompositePath } from "./CompositePath"
+import { FileLoader } from "./FileLoader"
 
-class CompositeFile {
+export interface CompositeFile {
+  toYaml: string
+  location: string
 }
 
 const setupLoader = async (path: CompositePath) => {
@@ -28,20 +31,8 @@ class DirectoryLoader {
   }
 }
 
-class FileLoader {
-  constructor (private readonly path: CompositePath) {}
-
-  async run (): Promise<CompositeFile[]> {
-    // todo: load file from $path and generate CompositeFile
-    console.log("loadFile at", this.path)
-    return [new CompositeFile()]
-  }
-}
-
 export const loadFiles =
   async (path: CompositePath): Promise<CompositeFile[]> => {
     const loader = await setupLoader(path)
-    const files = await loader.run()
-    console.log(files)
-    return []
+    return loader.run()
   }

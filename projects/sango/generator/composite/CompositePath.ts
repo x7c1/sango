@@ -2,6 +2,8 @@ import { join } from "path"
 
 export interface CompositePath {
   raw: string
+  toQualified: string
+  toRelative: string
   append (file: string): CompositePath
 }
 
@@ -13,6 +15,18 @@ class CompositePathImpl implements CompositePath {
   ) {}
 
   raw: string = join(this.basePath, this.sourceDir, ...this.files)
+
+  get toQualified () {
+    const parent = join(this.sourceDir).replace(/[/]/g, ".")
+    const location = [parent, ...this.files].join(".")
+
+    // remove file extension
+    return location.replace(/\.[^/.]+$/, "")
+  }
+
+  get toRelative () {
+    return join(this.sourceDir, ...this.files)
+  }
 
   append (file: string) {
     return new CompositePathImpl(

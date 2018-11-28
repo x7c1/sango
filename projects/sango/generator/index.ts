@@ -55,6 +55,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
         basePath,
         sourceDir: params.sourceDir,
       }))
+      console.log(files)
 
       /*
       // todo:

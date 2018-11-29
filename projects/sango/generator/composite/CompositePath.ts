@@ -22,6 +22,11 @@ export interface CompositePath {
    */
   toQualified: string
 
+  /**
+   * ex. "#/components/schemas/errors.foo.bar.IllegalParameter"
+   */
+  asSchema: string
+
   append (file: string): CompositePath
 }
 
@@ -48,6 +53,10 @@ class CompositePathImpl implements CompositePath {
 
   get toRelative () {
     return join(this.sourceDir, ...this.files)
+  }
+
+  get asSchema () {
+    return `#/components/schemas/${this.toQualified}`
   }
 
   append (file: string) {

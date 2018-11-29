@@ -23,9 +23,9 @@ export interface CompositePath {
   toQualified: string
 
   /**
-   * ex. "#/components/schemas/errors.foo.bar.IllegalParameter"
+   * ex. "errors.foo.bar.IllegalParameter.yaml"
    */
-  asSchema: string
+  toQualifiedFileName: string
 
   append (file: string): CompositePath
 }
@@ -46,8 +46,6 @@ class CompositePathImpl implements CompositePath {
   get toQualified () {
     const parent = join(this.sourceDir).replace(/[/]/g, ".")
     const location = [parent, ...this.files].join(".")
-
-    // remove file extension
     return location.replace(/\.[^/.]+$/, "")
   }
 
@@ -55,8 +53,8 @@ class CompositePathImpl implements CompositePath {
     return join(this.sourceDir, ...this.files)
   }
 
-  get asSchema () {
-    return `#/components/schemas/${this.toQualified}`
+  get toQualifiedFileName () {
+    return `${this.toQualified}.yaml`
   }
 
   append (file: string) {

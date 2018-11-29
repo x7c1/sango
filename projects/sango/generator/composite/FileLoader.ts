@@ -22,7 +22,7 @@ export class FileLoader {
     )
     const file: CompositeFile = {
       toYaml: dump({ [this.path.toQualified]: content.definition }),
-      location: this.path.toRelative,
+      path: this.path,
     }
     return [file]
   }

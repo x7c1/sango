@@ -59,12 +59,12 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
         path,
         discriminator: params.discriminator,
         parent: params.parent,
+        sourceDir: params.sourceDir,
       })
       console.log(composite)
 
       /*
       // todo:
-      const composite = composeFiles(files, parentName, discriminator)
       const writer = FilesWriter({
         outputDir: path.join(basePath, params.outputDir),
         logger,

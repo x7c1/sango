@@ -1,9 +1,14 @@
 import { Logger } from "./"
-import * as winston from "winston"
+import { createLogger } from "winston"
+import { format } from "logform"
 import * as DailyRotateFile from "winston-daily-rotate-file"
 
-const createLogger = (filename: string) => winston.createLogger({
-  format: winston.format.cli(),
+const create = (filename: string) => createLogger({
+  format: format.combine(
+    format.colorize(),
+    format.timestamp(),
+    format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
+  ),
   transports: [
     new DailyRotateFile({
       filename,
@@ -18,7 +23,7 @@ interface FileLoggerParams {
 }
 
 export const FileLogger = ({ filename }: FileLoggerParams): Logger => {
-  const logger = createLogger(filename)
+  const logger = create(filename)
   return {
     info: message => {
       logger.info(message)

@@ -7,6 +7,7 @@ import { attempt } from "../attempt"
 import { PostAssertable } from "./PostAssertable"
 import { composeFiles } from "./composite"
 import { CompositePath } from "./composite/CompositePath"
+import { CompositeWriter } from "./CompositeWriter"
 
 export interface Generator<A> {
   (): Promise<A>
@@ -50,29 +51,23 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
     }
   },
   compose (params: ComposerParams): Generator<void> {
-    const path = CompositePath({
+    const compositePath = CompositePath({
       basePath,
       sourceDir: params.sourceDir,
     })
     return async () => {
       const composite = await composeFiles({
-        path,
+        path: compositePath,
         discriminator: params.discriminator,
         parent: params.parent,
         sourceDir: params.sourceDir,
       })
-      console.log(composite)
-
-      /*
-      // todo:
-      const writer = FilesWriter({
+      const writer = CompositeWriter({
         outputDir: path.join(basePath, params.outputDir),
         logger,
       })
-      await writer.clearFiles()
-      await writer.putFile(composite.parentFile)
-      await writer.putFiles(composite.childFiles)
-      */
+      await writer.replaceFiles(composite)
+      logger.info("[generator#compose] done.")
     }
   },
   resolve (templatePath: string): Generator<string> & PostAssertable<string> {

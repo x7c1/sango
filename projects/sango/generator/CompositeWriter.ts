@@ -37,7 +37,6 @@ class CompositeWriterImpl implements CompositeWriter {
   private writeParentFile = async (file: ParentFile): Promise<void> => {
     const path = join(this.outputDir, file.path.toQualifiedFileName)
     await writeFile(path, file.toYaml)
-    return
   }
 
   private writeChildFile = async (file: CompositeFile) => {

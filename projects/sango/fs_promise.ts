@@ -20,3 +20,7 @@ export const appendFile = (file: string, content: string): Promise<void> => {
 export const writeFile = (file: string, content: string): Promise<void> => {
   return promisify(fs.writeFile)(file, content)
 }
+
+export const mkdir = (dir: string, options: fs.MakeDirectoryOptions) => {
+  return promisify(fs.mkdir)(dir, options)
+}

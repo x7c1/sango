@@ -21,10 +21,10 @@ export const writeFile = (file: string, content: string): Promise<void> => {
   return promisify(fs.writeFile)(file, content)
 }
 
-export const mkdir = (dir: string, options: fs.MakeDirectoryOptions) => {
+export const mkdir = (dir: string, options: fs.MakeDirectoryOptions): Promise<void> => {
   return promisify(fs.mkdir)(dir, options)
 }
 
-export const unlink = (file: string) => {
+export const unlink = (file: string): Promise<void> => {
   return promisify(fs.unlink)(file)
 }

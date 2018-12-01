@@ -27,11 +27,15 @@ class CompositeWriterImpl implements CompositeWriter {
     await Promise.all(composite.childFiles.map(this.writeChildFile))
   }
 
+  private info (message: string) {
+    this.logger.info(`[CompositeWriter] ${message}`)
+  }
+
   private async ensureDirectory () {
     if (fs.existsSync(this.outputDir)) {
       return
     }
-    this.logger.info(`[CompositeWriterImpl] ensureDirectory: ${this.outputDir}`)
+    this.info(`ensureDirectory: ${this.outputDir}`)
     await mkdir(this.outputDir, { recursive: true })
   }
 
@@ -39,14 +43,14 @@ class CompositeWriterImpl implements CompositeWriter {
     const files = await readdir(this.outputDir)
     const paths = files.map(_ => join(this.outputDir, _))
 
-    this.logger.info(`[CompositeWriterImpl] clearFiles: ${this.outputDir}`)
+    this.info(`clearFiles: ${this.outputDir}`)
     await Promise.all(paths.map(unlink))
   }
 
   private writeParentFile = async (file: ParentFile): Promise<void> => {
     const path = join(this.outputDir, file.path.toQualifiedFileName)
 
-    this.logger.info(`[CompositeWriterImpl] write: ${file.path.toQualifiedFileName}`)
+    this.info(`writeParentFile: ${file.path.toQualifiedFileName}`)
     await writeFile(path, file.toYaml)
   }
 
@@ -54,7 +58,7 @@ class CompositeWriterImpl implements CompositeWriter {
     const path = join(this.outputDir, file.path.toQualifiedFileName)
     const head = `# ${file.path.raw} \n`
 
-    this.logger.info(`[CompositeWriterImpl] write: ${file.path.toQualifiedFileName}`)
+    this.info(`writeChildFile: ${file.path.toQualifiedFileName}`)
     await writeFile(path, head + file.toYaml)
   }
 }

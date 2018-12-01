@@ -18,7 +18,7 @@ interface ParentFile {
 class CompositeWriterImpl implements CompositeWriter {
   constructor (
     private readonly outputDir: string,
-    private readonly logger: Logger) {}
+    private readonly logger: Logger) { }
 
   async replaceFiles (composite: Composite): Promise<void> {
     await this.ensureDirectory()

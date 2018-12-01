@@ -46,7 +46,7 @@ export const composeFiles =
     const toQualified = join(params.sourceDir, params.parent).replace(/[/]/, ".")
     const parentFile = {
       toYaml: dump({
-        [toQualified] : { oneOf, discriminator },
+        [toQualified]: { oneOf, discriminator },
       }),
       path: {
         toQualifiedFileName: `${toQualified}.yaml`,

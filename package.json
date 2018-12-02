@@ -10,9 +10,9 @@
     "lint": "npm run tsfmt:verify && npm run tslint",
     "format": "npm run tsfmt:replace && npm run tslint:fix",
     "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
-    "sample:test": "./scripts/mocha-all.sh ./projects/example-petstore",
-    "sample:build": "tsc --build ./projects/example-petstore",
-    "sample": "NODE_PATH=./dist node ./dist/example-petstore"
+    "project:test": "./scripts/mocha-all.sh ./projects/$SANGO_PROJECT",
+    "project:build": "tsc --build ./projects/$SANGO_PROJECT",
+    "project": "NODE_PATH=./dist node ./dist/$SANGO_PROJECT"
   },
   "author": "x7c1",
   "repository": "https://github.com/x7c1/sango",

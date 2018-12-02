@@ -14,7 +14,9 @@ describe("generated error attributes", () => {
 
   it("should contain composite parent", async () => {
     const root = await read()
-    expect(root["components"]["schemas"]["errors.ErrorAttributes"]).to.deep.equal({
+    const schemas = root["components"]["schemas"]
+
+    expect(schemas["errors.ErrorAttributes"]).to.deep.equal({
       oneOf: [
         { "$ref": "#/components/schemas/errors.foo.CamelCaseName" },
         { "$ref": "#/components/schemas/errors.foo.bar.snake_case_name" },

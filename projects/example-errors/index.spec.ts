@@ -2,7 +2,7 @@ import { expect } from "chai"
 import { load } from "js-yaml"
 import { readFile } from "sango/fs_promise"
 
-describe("generated OpenAPI yaml", () => {
+describe("generated error attributes", () => {
 
   const read = async () => {
     // run generator by this line

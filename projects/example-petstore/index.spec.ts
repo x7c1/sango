@@ -48,17 +48,19 @@ describe("generated OpenAPI yaml", () => {
 
   it("should contain paths", async () => {
     const root = await read()
-    expect(root["paths"]["/pets"]["post"]).to.exist
-    expect(root["paths"]["/pets"]["get"]).to.exist
-    expect(root["paths"]["/users/{userId}"]["get"]).to.exist
-    expect(root["paths"]["/users/{userId}"]["post"]).to.not.exist
+    const paths = root["paths"]
+    expect(paths["/pets"]).to.have.property("post")
+    expect(paths["/pets"]).to.have.property("get")
+    expect(paths["/users/{userId}"]).to.have.property("get")
+    expect(paths["/users/{userId}"]).not.to.have.property("post")
   })
 
   it("should contain components", async () => {
     const root = await read()
-    expect(root["components"]["schemas"]["Error"]).to.exist
-    expect(root["components"]["schemas"]["Pets"]).to.exist
-    expect(root["components"]["schemas"]["Pet"]).to.exist
-    expect(root["components"]["schemas"]["User"]).to.exist
+    const schemas = root["components"]["schemas"]
+    expect(schemas).to.have.property("Error")
+    expect(schemas).to.have.property("Pets")
+    expect(schemas).to.have.property("Pet")
+    expect(schemas).to.have.property("User")
   })
 })

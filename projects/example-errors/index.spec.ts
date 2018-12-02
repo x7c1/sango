@@ -12,19 +12,70 @@ describe("generated OpenAPI yaml", () => {
     return load(text)
   }
 
-  it("should contain paths", async () => {
+  it("should contain composite parent", async () => {
     const root = await read()
-    expect(root["paths"]["/pets"]["post"]).to.exist
-    expect(root["paths"]["/pets"]["get"]).to.exist
-    expect(root["paths"]["/users/{userId}"]["get"]).to.exist
-    expect(root["paths"]["/users/{userId}"]["post"]).to.not.exist
+    expect(root["components"]["schemas"]["errors.ErrorAttributes"]).to.deep.equal({
+      oneOf: [
+        { "$ref": "#/components/schemas/errors.foo.CamelCaseName" },
+        { "$ref": "#/components/schemas/errors.foo.bar.snake_case_name" },
+        { "$ref": "#/components/schemas/errors.invalid-foo-id" },
+      ],
+      discriminator: {
+        propertyName: "errorKey",
+        mapping: {
+          "foo/CamelCaseName":
+            "#/components/schemas/errors.foo.CamelCaseName",
+          "foo/bar/snake_case_name":
+            "#/components/schemas/errors.foo.bar.snake_case_name",
+          "invalid-foo-id":
+            "#/components/schemas/errors.invalid-foo-id",
+        },
+      },
+    })
   })
 
-  it("should contain components", async () => {
+  it("should contain composite children", async () => {
     const root = await read()
-    expect(root["components"]["schemas"]["Error"]).to.exist
-    expect(root["components"]["schemas"]["Pets"]).to.exist
-    expect(root["components"]["schemas"]["Pet"]).to.exist
-    expect(root["components"]["schemas"]["User"]).to.exist
+    const schemas = root["components"]["schemas"]
+
+    expect(schemas["errors.foo.CamelCaseName"]).to.deep.equal({
+      type: "object",
+      required: [ "max", "min" ],
+      properties:        {
+        max: { type: "number", description: "max length" },
+        min: { type: "number", description: "min length" },
+        errorKey: {
+          type: "string",
+          description: "discriminator of ErrorAttributes",
+          example: "foo/CamelCaseName",
+        },
+      },
+    })
+    expect(schemas["errors.invalid-foo-id"]).to.deep.equal({
+      type: "object",
+      required: [ "bar" ],
+      properties: {
+        bar: {
+          type: "string",
+          description: "explanation for this bar field." },
+        errorKey: {
+          type: "string",
+          description: "discriminator of ErrorAttributes",
+          example: "invalid-foo-id" },
+      },
+    })
+    expect(schemas["errors.foo.bar.snake_case_name"]).to.deep.equal({
+      type: "object",
+      required: [ "max", "min" ],
+      properties:        {
+        max: { type: "number", description: "max length" },
+        min: { type: "number", description: "min length" },
+        errorKey: {
+          type: "string",
+          description: "discriminator of ErrorAttributes",
+          example: "foo/bar/snake_case_name" },
+      },
+    })
   })
+
 })

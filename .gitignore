@@ -5,9 +5,9 @@ dist/*
 !.gitkeep
 
 # example
+*.gen
 *.gen.yaml
 logs/*
-errors.gen
 
 # WebStorm
 .idea

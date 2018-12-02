@@ -42,8 +42,8 @@ describe("generated error attributes", () => {
 
     expect(schemas["errors.foo.CamelCaseName"]).to.deep.equal({
       type: "object",
-      required: [ "max", "min" ],
-      properties:        {
+      required: ["max", "min"],
+      properties: {
         max: { type: "number", description: "max length" },
         min: { type: "number", description: "min length" },
         errorKey: {
@@ -55,27 +55,30 @@ describe("generated error attributes", () => {
     })
     expect(schemas["errors.invalid-foo-id"]).to.deep.equal({
       type: "object",
-      required: [ "bar" ],
+      required: ["bar"],
       properties: {
         bar: {
           type: "string",
-          description: "explanation for this bar field." },
+          description: "explanation for this bar field.",
+        },
         errorKey: {
           type: "string",
           description: "discriminator of ErrorAttributes",
-          example: "invalid-foo-id" },
+          example: "invalid-foo-id",
+        },
       },
     })
     expect(schemas["errors.foo.bar.snake_case_name"]).to.deep.equal({
       type: "object",
-      required: [ "max", "min" ],
-      properties:        {
+      required: ["max", "min"],
+      properties: {
         max: { type: "number", description: "max length" },
         min: { type: "number", description: "min length" },
         errorKey: {
           type: "string",
           description: "discriminator of ErrorAttributes",
-          example: "foo/bar/snake_case_name" },
+          example: "foo/bar/snake_case_name",
+        },
       },
     })
   })

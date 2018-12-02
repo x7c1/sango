@@ -42,7 +42,7 @@ describe("generated error attributes", () => {
 
     expect(schemas["errors.foo.CamelCaseName"]).to.deep.equal({
       type: "object",
-      required: ["max", "min"],
+      required: ["max", "min", "errorKey"],
       properties: {
         max: { type: "number", description: "max length" },
         min: { type: "number", description: "min length" },
@@ -55,7 +55,7 @@ describe("generated error attributes", () => {
     })
     expect(schemas["errors.invalid-foo-id"]).to.deep.equal({
       type: "object",
-      required: ["bar"],
+      required: ["bar", "errorKey"],
       properties: {
         bar: {
           type: "string",
@@ -70,7 +70,7 @@ describe("generated error attributes", () => {
     })
     expect(schemas["errors.foo.bar.snake_case_name"]).to.deep.equal({
       type: "object",
-      required: ["max", "min"],
+      required: ["max", "min", "errorKey"],
       properties: {
         max: { type: "number", description: "max length" },
         min: { type: "number", description: "min length" },

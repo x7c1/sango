@@ -16,4 +16,4 @@ BadRequestResponse:
             type: string
             example: requested foo-id is invalid.
           errorAttributes:
-            $ref: '#/components/schemas/ErrorAttributes'
+            $ref: '#/components/schemas/errors.ErrorAttributes'

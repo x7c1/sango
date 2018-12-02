@@ -20,6 +20,7 @@ export class FileLoader {
       content.definition.properties,
       this.discriminator,
     )
+    content.definition.required.push(this.params.discriminator)
     const file: CompositeFile = {
       toYaml: dump({ [this.path.toQualified]: content.definition }),
       path: this.path,

@@ -10,14 +10,17 @@ const { traverseTexts, traverseYamls } = setupTraverser(context)
 export const main = Runner
   .run([
     compose({
-      outputDir: "./components/errors.gen",
+      outputDir: "./components/schemas.errors.gen",
       sourceDir: "./errors",
       parent: "ErrorAttributes",
       discriminator: "errorKey",
     }),
     write({
       outputPath: "./components/schemas.gen.yaml",
-      traverser: traverseTexts("./components/schemas", "./components/errors.gen"),
+      traverser: traverseTexts(
+        "./components/schemas",
+        "./components/schemas.errors.gen",
+      ),
     }),
     write({
       outputPath: "./components/responses.gen.yaml",

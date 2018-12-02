@@ -10,6 +10,7 @@
     "lint": "npm run tsfmt:verify && npm run tslint",
     "format": "npm run tsfmt:replace && npm run tslint:fix",
     "test": "./scripts/projects.sh ./scripts/mocha-all.sh",
+    "build": "tsc --project ./projects/sango/tsconfig.build.json",
     "project:test": "./scripts/mocha-all.sh ./projects/$SANGO_PROJECT",
     "project:build": "tsc --build ./projects/$SANGO_PROJECT",
     "project": "NODE_PATH=./dist node ./dist/$SANGO_PROJECT"

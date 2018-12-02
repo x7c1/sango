@@ -1,4 +1,4 @@
-import * as path from "path"
+import { dirname, join } from "path"
 import { Appender } from "../appender"
 import { Traverser } from "../loader/traverse"
 import { resolveYamlRef } from "./resolve"
@@ -8,6 +8,7 @@ import { PostAssertable } from "./PostAssertable"
 import { composeFiles } from "./composite"
 import { CompositePath } from "./composite/CompositePath"
 import { CompositeWriter } from "./CompositeWriter"
+import { DirectoryInitializer } from "./DirectoryInitializer"
 
 export interface Generator<A> {
   (): Promise<A>
@@ -43,7 +44,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
       const loader = await traverser()
       const contents = await loader.loadContents()
       const appender = Appender({
-        outputPath: path.join(basePath, outputPath),
+        outputPath: join(basePath, outputPath),
         logger,
       })
       await appender.clear()
@@ -63,7 +64,7 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
         sourceDir: params.sourceDir,
       })
       const writer = CompositeWriter({
-        outputDir: path.join(basePath, params.outputDir),
+        outputDir: join(basePath, params.outputDir),
         logger,
       })
       await writer.replaceFiles(composite)
@@ -83,8 +84,13 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
     })
   },
   output: (outputPath: string) => async (yaml: string): Promise<void> => {
+    const path = join(basePath, outputPath)
+    const initializer = DirectoryInitializer(dirname(path), logger)
+    await initializer.ensureDirectory()
+    await initializer.clearFiles()
+
     const appender = Appender({
-      outputPath: path.join(basePath, outputPath),
+      outputPath: path,
       logger,
     })
     await appender.clear()

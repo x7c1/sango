@@ -2,7 +2,8 @@ import * as fs from "fs"
 import { join } from "path"
 import { Composite, CompositeFile } from "./composite"
 import { Logger } from "../logger"
-import { mkdir, readdir, unlink, writeFile } from "../fs_promise"
+import { writeFile } from "../fs_promise"
+import { DirectoryInitializer } from "./DirectoryInitializer"
 
 interface CompositeWriter {
   replaceFiles (composite: Composite): Promise<void>
@@ -21,30 +22,16 @@ class CompositeWriterImpl implements CompositeWriter {
     private readonly logger: Logger) { }
 
   async replaceFiles (composite: Composite): Promise<void> {
-    await this.ensureDirectory()
-    await this.clearFiles()
+    await this.initializer.ensureDirectory()
+    await this.initializer.clearFiles()
     await this.writeParentFile(composite.parentFile)
     await Promise.all(composite.childFiles.map(this.writeChildFile))
   }
 
+  private initializer = DirectoryInitializer(this.outputDir, this.logger)
+
   private info (message: string) {
     this.logger.info(`[CompositeWriter] ${message}`)
-  }
-
-  private async ensureDirectory () {
-    if (fs.existsSync(this.outputDir)) {
-      return
-    }
-    this.info(`ensureDirectory: ${this.outputDir}`)
-    await mkdir(this.outputDir, { recursive: true })
-  }
-
-  private async clearFiles () {
-    const files = await readdir(this.outputDir)
-    const paths = files.map(_ => join(this.outputDir, _))
-
-    this.info(`clearFiles: ${this.outputDir}`)
-    await Promise.all(paths.map(unlink))
   }
 
   private writeParentFile = async (file: ParentFile): Promise<void> => {

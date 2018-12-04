@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig-base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../../dist/example-errors",
+    "paths": {
+      "sango": [
+        "../sango"
+      ],
+      "sango/*": [
+        "../sango/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "../sango"
+    }
+  ]
+}

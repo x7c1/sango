@@ -1,0 +1,17 @@
+/pets:
+  post:
+    summary: Create a pet
+    operationId: createPets
+    tags:
+      - pets
+    responses:
+      '201':
+        description: Null response
+      '400':
+        $ref: '#/components/responses/BadRequestResponse'
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"

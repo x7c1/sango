@@ -12,5 +12,6 @@ install:
   - npm install
 script:
   - npm run lint
-  - npm run sample:build
+  - SANGO_PROJECT=example-petstore npm run project:build
+  - SANGO_PROJECT=example-errors npm run project:build
   - npm run test

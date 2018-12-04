@@ -1,0 +1,14 @@
+comment:
+  cool comment about this error.
+definition:
+  type: object
+  required:
+    - max
+    - min
+  properties:
+    max:
+      type: number
+      description: max length
+    min:
+      type: number
+      description: min length

@@ -20,8 +20,6 @@ projects/example-petstore
 │       ├── Pet.yaml
 │       ├── Pets.yaml
 │       └── User.yaml
-├── index.template.yaml
-├── index.ts
 ├── info
 │   └── index.yaml
 └── paths

@@ -10,7 +10,7 @@ npm install sango
 
 ## Usage
 
-1) Create yaml files like following [example-petstore](./projects/example-petstore/index.ts) project:
+1) Create yaml files like following [example-petstore](./projects/example-petstore) project:
 
 ```
 projects/example-petstore

@@ -45,7 +45,7 @@ components:
     $ref: ./components/schemas.gen.yaml
 ```
 
-3) Combine them :
+3) Combine them:
 
 ```ts
 Runner

@@ -69,6 +69,6 @@ Runner
   })
 ```
 
-## Lincense
+## License
 
 This repository is published under the MIT License.

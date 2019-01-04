@@ -1,4 +1,3 @@
-import * as fs from "fs"
 import { join } from "path"
 import { Composite, CompositeFile } from "./composite"
 import { Logger } from "../logger"

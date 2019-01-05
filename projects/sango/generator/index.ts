@@ -87,7 +87,6 @@ export const setupGenerator = ({ logger, basePath }: GeneratorContext) => ({
     const path = join(basePath, outputPath)
     const initializer = DirectoryInitializer(dirname(path), logger)
     await initializer.ensureDirectory()
-    await initializer.clearFiles()
 
     const appender = Appender({
       outputPath: path,

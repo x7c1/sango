@@ -1,6 +1,6 @@
 {
   "name": "sango",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Generate OpenAPI file from separate yamls.",
   "scripts": {
     "tslint": "./scripts/projects.sh 'tslint --project'",

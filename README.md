@@ -1,5 +1,8 @@
 # Sango
 
+[![build status](https://img.shields.io/travis/x7c1/sango/master.svg?style=flat-square)](https://travis-ci.org/x7c1/sango)
+[![npm](https://img.shields.io/npm/v/sango.svg?style=flat-square)](https://www.npmjs.com/package/sango)
+
 Functions to generate OpenAPI YAML file.
 
 ## Install
